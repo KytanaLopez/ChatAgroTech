@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgroTech - Asistente Virtual del Maíz</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: linear-gradient(120deg, #e8f5e9, #f1f8e9);
+      color: #2e7d32;
+    }
+
+    header {
+      background-color: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 1.5rem 0;
+      font-size: 1.8rem;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 2rem;
+    }
+
+    h2 {
+      color: #1b5e20;
+      text-align: center;
+    }
+
+    .chatbox {
+      border: 2px solid #c8e6c9;
+      border-radius: 15px;
+      padding: 1rem;
+      height: 350px;
+      overflow-y: auto;
+      background-color: #f9fff9;
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message {
+      margin: 0.5rem 0;
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      max-width: 75%;
+    }
+
+    .user {
+      background-color: #dcedc8;
+      align-self: flex-end;
+    }
+
+    .bot {
+      background-color: #a5d6a7;
+      align-self: flex-start;
+    }
+
+    .input-area {
+      display: flex;
+      margin-top: 1rem;
+    }
+
+    input {
+      flex: 1;
+      padding: 0.8rem;
+      border: 2px solid #c8e6c9;
+      border-radius: 10px;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.8rem 1.5rem;
+      margin-left: 0.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #1b5e20;
+    }
+
+    /* Botones rápidos */
+    .quick-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      justify-content: center;
+    }
+
+    .quick-btn {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.3s;
+    }
+
+    .quick-btn:hover {
+      background: #1b5e20;
+    }
+  </style>
+</head>
+<body>
+
+  <header>🌽 AgroTech - Asistente Virtual del Maíz</header>
+
+  <main>
+    <h2>Bienvenido a AgroTech</h2>
+    <p>Haz clic en los botones rápidos o escribe una pregunta.</p>
+
+    <!-- BOTONES RÁPIDOS -->
+    <div class="quick-buttons">
+      <button class="quick-btn" onclick="sendQuick('siembra')">Siembra</button>
+      <button class="quick-btn" onclick="sendQuick('riego')">Riego</button>
+      <button class="quick-btn" onclick="sendQuick('plagas')">Plagas</button>
+      <button class="quick-btn" onclick="sendQuick('fertilización')">Fertilización</button>
+      <button class="quick-btn" onclick="sendQuick('suelo')">Suelo</button>
+      <button class="quick-btn" onclick="sendQuick('enfermedades')">Enfermedades</button>
+      <button class="quick-btn" onclick="sendQuick('clima')">Clima</button>
+      <button class="quick-btn" onclick="sendQuick('cosecha')">Cosecha</button>
+    </div>
+
+    <section>
+      <div class="chatbox" id="chatbox">
+        <div class="message bot">👋 ¡Hola! Soy <b>AgroBot</b>, ¿en qué tema del maíz quieres ayuda?</div>
+      </div>
+
+      <div class="input-area">
+        <input type="text" id="userInput" placeholder="Escribe tu pregunta aquí...">
+        <button onclick="sendMessage()">Enviar</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+
+    function sendQuick(text) {
+      document.getElementById("userInput").value = text;
+      sendMessage();
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const chatbox = document.getElementById('chatbox');
+      const userText = input.value.trim();
+
+      if (userText === '') return;
+
+      const userMessage = document.createElement('div');
+      userMessage.classList.add('message', 'user');
+      userMessage.textContent = userText;
+      chatbox.appendChild(userMessage);
+
+      input.value = '';
+      chatbox.scrollTop = chatbox.scrollHeight;
+
+      setTimeout(() => {
+        const botMessage = document.createElement('div');
+        botMessage.classList.add('message', 'bot');
+        botMessage.textContent = getBotResponse(userText);
+        chatbox.appendChild(botMessage);
+        chatbox.scrollTop = chatbox.scrollHeight;
+      }, 600);
+    }
+
+    // RESPUESTAS DEL BOT
+    function getBotResponse(input) {
+      input = input.toLowerCase();
+
+      if (input.includes("siembra")) {
+        return "🌱 CONSEJOS DE SIEMBRA:\n• Época ideal: inicio de lluvias.\n• Temperatura: 20°C - 30°C.\n• Profundidad: 3 a 5 cm.\n• Distancia: 70-90 cm entre hileras.\n• Usa semillas certificadas.";
+      }
+
+      if (input.includes("riego")) {
+        return "💧 RIEGO DEL MAÍZ:\n• Mantén el suelo húmedo sin encharcar.\n• Riega más en floración y llenado de mazorca.\n• Riego por goteo es el más eficiente.\n• Evita regar al mediodía.";
+      }
+
+      if (input.includes("plaga")) {
+        return "🐛 CONTROL DE PLAGAS:\n• Principales: gusano cogollero, trozadores, pulgones.\n• Usa control biológico: Bacillus thuringiensis.\n• Rotación de cultivos.\n• Mantén el campo libre de malezas.";
+      }
+
+      if (input.includes("fertili")) {
+        return "🌾 FERTILIZACIÓN ADECUADA:\n• Antes de sembrar: fósforo + materia orgánica.\n• A los 20 días: nitrógeno.\n• En floración: potasio.\n• No exceder nitrógeno para evitar plantas muy altas y poco grano.";
+      }
+
+      if (input.includes("suelo")) {
+        return "🟤 SUELO IDEAL:\n• Tipo franco o franco arenoso.\n• pH entre 5.8 y 7.0.\n• Buena aireación y drenaje.\n• Añade compost para mejorar fertilidad.";
+      }
+
+      if (input.includes("enfermedad")) {
+        return "🦠 ENFERMEDADES COMUNES:\n• Roya.\n• Tizón.\n• Pudrición de raíz.\n• Control: fungicidas biológicos, evitar exceso de humedad y usar variedades resistentes.";
+      }
+
+      if (input.includes("clima")) {
+        return "🌦 CLIMA IDEAL:\n• Temperatura: 18°C - 30°C.\n• Mucha luz solar.\n• Lluvias moderadas.\n• Evitar zonas de encharcamiento.";
+      }
+
+      if (input.includes("cosecha")) {
+        return "🌽 COSECHA:\n• El maíz está listo cuando el grano está duro.\n• Planta amarilla y seca.\n• Humedad del grano menor a 15%.\n• Almacena en lugar seco y ventilado.";
+      }
+
+      if (input.includes("hola") || input.includes("buenas")) {
+        return "👋 ¡Hola! Puedo ayudarte con siembra, riego, plagas, fertilización, clima, cosecha, suelo y más.";
+      }
+
+      return "🤔 No tengo información sobre eso aún. Puedes preguntar sobre siembra, riego, plagas, fertilización, clima, suelo o cosecha.";
+    }
+  </script>
+
+</body>
+</html>
